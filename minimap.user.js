@@ -61,9 +61,9 @@ window.addEventListener('load', function () {
         '<canvas id="minimap-cursor" style="width: 100%; height: 100%;z-index:3;position:absolute;top:0;left:0;"></canvas>' +
         '</div><div id="minimap-config" style="line-height:20px;">' +
 		'<a href=https://discord.io/trplace target="_blank">Discord' +
-        '<span id="hide-map" style="cursor:pointer;"> Küçültr' +
-        '</span> | <span id="follow-mouse" style="cursor:pointer;"Fareyi takip et' +
-        '</span> | Zoom: <span id="zoom-plus" style="cursor:pointer;font-weight:bold;">+</span>  /  ' +
+        '</a> | <span id="hide-map" style="cursor:pointer;color:white"> Haritayı Gizle' +
+        '</span> | <span id="follow-mouse" style="cursor:pointer;">Fareyi Takip Et' +
+        '</span>| Zoom: <span id="zoom-plus" style="cursor:pointer;font-weight:bold;">+</span> / ' +
         '<span id="zoom-minus" style="cursor:pointer;font-weight:bold;">-</span>' +
         '</div>' +
         '</div>';
@@ -124,7 +124,7 @@ window.addEventListener('load', function () {
     }, false);
     document.getElementById("zoom-minus").addEventListener('mouseup', function (e) {
         zooming_out = false;
-    }, false); 
+    }, false);
     gameWindow = document.getElementById("gameWindow");
     gameWindow.addEventListener('mouseup', function (evt) {
         if (!toggle_show)
@@ -263,7 +263,7 @@ function loadTemplates() {
             continue
         if (!y_window.between(temp_y-range*1, temp_yb+range*1))
             continue
-        
+
         needed_templates.push(template);
     }
     if (needed_templates.length == 0) {
