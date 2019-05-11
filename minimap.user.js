@@ -60,8 +60,9 @@ window.addEventListener('load', function () {
         '<canvas id="minimap-board" style="width: 100%; height: 100%;z-index:2;position:absolute;top:0;left:0;"></canvas>' +
         '<canvas id="minimap-cursor" style="width: 100%; height: 100%;z-index:3;position:absolute;top:0;left:0;"></canvas>' +
         '</div><div id="minimap-config" style="line-height:20px;">' +
-        '<span id="hide-map" style="cursor:pointer;"> Minimizar' +
-        '</span> | <span id="follow-mouse" style="cursor:pointer;"Seguir o mouse' +
+		'<a href=https://discord.io/trplace target="_blank">Discord' +
+        '<span id="hide-map" style="cursor:pointer;"> Küçültr' +
+        '</span> | <span id="follow-mouse" style="cursor:pointer;"Fareyi takip et' +
         '</span> | Zoom: <span id="zoom-plus" style="cursor:pointer;font-weight:bold;">+</span>  /  ' +
         '<span id="zoom-minus" style="cursor:pointer;font-weight:bold;">-</span>' +
         '</div>' +
