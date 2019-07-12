@@ -23,7 +23,7 @@ window.addEventListener('load', function () {
     re = /(.*)\/\?p=(\-?(?:\d*)),(\-?(?:\d*))/g;
     //Regular Expression to get coordinates from cursor
     rec = /x\:(\d*) y\:(\d*)/g;
-    gameWindow = document.getElementById("gameWindow");
+    gameWindow = document.getElementById("canvas");
     //DOM element of the displayed X, Y variables
     coorDOM = null;
     findCoor();
@@ -52,19 +52,18 @@ window.addEventListener('load', function () {
 
     var div = document.createElement('div');
     div.setAttribute('class', 'post block bc2');
-    div.innerHTML = '<div id="minimapbg" style="position: absolute; right: 1em; bottom: 1em;">' +
-        '<div class="posy" id="posyt" style="background-color: rgba(0, 0, 0, 0.75); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 21px; padding: 6px;">' +
+    div.innerHTML = '<style>.grecaptcha-badge{display: none;}</style>   <div id="minimapbg" style="position: absolute; right: 1em; bottom: 1em;">' +
+'<div class="posy" id="posyt" style="background-size: 100%; background-image: url(https://i.imgur.com/2qu5Wch.png); color: red; text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 3px; padding: 0px;">' +
         '<div id="minimap-text" style="display: none;"></div>' +
-        '<div id="minimap-box" style="position: relative;width:420px;height:300px">' +
+        '<div id="minimap-title" style="line-height: 20px; padding: 0px;border: 1px solid red; color: gold; font-weight: bold; font-size: 0.9em; background-color:rgba(0, 0, 0,0.75);"> 👑 Império Brasil 👑' +
+        '<div id="minimap-box" style="position: relative;width:375px;height:250px;background-color:rgba(0, 0, 0, 0.75);padding:1px;border-top: 1px solid red;">' +
         '<canvas id="minimap" style="width: 100%; height: 100%;z-index:1;position:absolute;top:0;left:0;"></canvas>' +
-        '<canvas id="minimap-board" style="width: 100%; height: 100%;z-index:2;position:absolute;top:0;left:0;"></canvas>' +
+        '<canvas id="minimap-board" style="width: 100%; height: 100%;z-index:2;position:absolute;top:0;left:0;background-color:rgba(0, 0, 0, 0);"></canvas>' +
         '<canvas id="minimap-cursor" style="width: 100%; height: 100%;z-index:3;position:absolute;top:0;left:0;"></canvas>' +
-        '</div><div id="minimap-config" style="line-height:20px;">' +
-		'<a href=https://discord.io/trplace target="_blank">Discord' +
-        '</a> | <span id="hide-map" style="cursor:pointer;color:white"> Haritayı Gizle' +
-        '</span> | <span id="follow-mouse" style="cursor:pointer;">Fareyi Takip Et' +
-        '</span>| Zoom: <span id="zoom-plus" style="cursor:pointer;font-weight:bold;">+</span> / ' +
-        '<span id="zoom-minus" style="cursor:pointer;font-weight:bold;">-</span>' +
+        '</div><div id="minimap-config" style="line-height:20px; padding: 1px; font-weight: normal; background-color:rgba(0, 0, 0,0.75); font-size: 1.2em;border-top: 1px solid red; text-align: center;">' +
+        '<span id="hide-map" style="cursor:pointer;font-weight:bold; color: red;">    OFF' +
+        '</span> | Zoom: <span id="zoom-plus" style="cursor:pointer;font-weight:bold;font-size:18px;">+</span>  /  ' +
+        '<span id="zoom-minus" style="cursor:pointer;font-weight:bold;font-size:18px;">-</span>' +
         '</div>' +
         '</div>';
     document.body.appendChild(div);
@@ -80,6 +79,7 @@ window.addEventListener('load', function () {
     ctx_minimap = minimap.getContext("2d");
     ctx_minimap_board = minimap_board.getContext("2d");
     ctx_minimap_cursor = minimap_cursor.getContext("2d");
+    document.getElementsByClassName("grecaptcha-badge")[0].style.display = "none";
 
     //No Antialiasing when scaling!
     ctx_minimap.mozImageSmoothingEnabled = false;
@@ -96,13 +96,19 @@ window.addEventListener('load', function () {
         document.getElementById("minimap-box").style.display = "none";
         document.getElementById("minimap-config").style.display = "none";
         document.getElementById("minimap-text").style.display = "block";
-        document.getElementById("minimap-text").innerHTML = "Minimapi Göster";
+        document.getElementById("minimap-box").style.display = "none";
+        document.getElementById("minimap-title").style.display = "none";
+        document.getElementById("minimap-text").style.backgroundColor = "rgba(6, 214, 2, 0.95)";
+        document.getElementById("minimap-text").style.fontWeight = "bold";
+        document.getElementById("minimap-text").style.color = "blue";
+        document.getElementById("minimap-text").innerHTML = "Mostrar Mapa";
         document.getElementById("minimap-text").style.cursor = "pointer";
     };
     document.getElementById("minimap-text").onclick = function () {
         toggle_show = true;
         document.getElementById("minimap-box").style.display = "block";
         document.getElementById("minimap-config").style.display = "block";
+        document.getElementById("minimap-title").style.display = "block";
         document.getElementById("minimap-text").style.display = "none";
         document.getElementById("minimap-text").style.cursor = "default";
         loadTemplates();
@@ -125,7 +131,8 @@ window.addEventListener('load', function () {
     document.getElementById("zoom-minus").addEventListener('mouseup', function (e) {
         zooming_out = false;
     }, false);
-    gameWindow = document.getElementById("gameWindow");
+
+    gameWindow = document.getElementById("canvas");
     gameWindow.addEventListener('mouseup', function (evt) {
         if (!toggle_show)
             return;
@@ -136,8 +143,8 @@ window.addEventListener('load', function () {
     gameWindow.addEventListener('mousemove', function (evt) {
         if (!toggle_show)
             return;
-        coorDOM = document.getElementsByClassName("coorbox")[0];
-        coordsXY = coorDOM.innerHTML.split(/(-?\d+)/)
+        coorDOM = document.getElementById("coords");
+        coordsXY = coorDOM.innerHTML.split(/(\d+)/)
         //console.log(coordsXY);
         x_new = (coordsXY[0].substring(2) + coordsXY[1])*1
         y_new = (coordsXY[2].substring(3) + coordsXY[3])*1;
@@ -161,7 +168,7 @@ window.addEventListener('load', function () {
 
 function updateloop() {
 
-    console.log("Updating Template List");
+    console.log("Updating template list...");
     // Get JSON of available templates
     var xmlhttp = new XMLHttpRequest();
     var url = window.baseTepmlateUrl + "templates/data.json?" + new Date().getTime();
@@ -175,11 +182,11 @@ function updateloop() {
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 
-    console.log("Refresh got forced.");
+    console.log("Reload forced.");
     image_list = [];
     loadTemplates();
 
-    setTimeout(updateloop, 60000)
+    setTimeout(updateloop, 5000)
 }
 
 function toggleShow() {
@@ -195,7 +202,7 @@ function toggleShow() {
         document.getElementById("minimap-box").style.display = "none";
         document.getElementById("minimap-config").style.display = "none";
         document.getElementById("minimap-text").style.display = "block";
-        document.getElementById("minimap-text").innerHTML = "Mostrar Minimap";
+        document.getElementById("minimap-text").innerHTML = "Mostrar Mapa";
         document.getElementById("minimapbg").onclick = function () {
             toggleShow()
         };
@@ -258,19 +265,19 @@ function loadTemplates() {
         var temp_yb = parseInt(template_list[template]["y"]) + parseInt(template_list[template]["height"]);
         // if (temp_xr <= x_left || temp_yb <= y_top || temp_x >= x_right || temp_y >= y_bottom)
         //    continue
-        console.log(x_window, y_window);
         if (!x_window.between(temp_x-range*1, temp_xr+range*1))
             continue
         if (!y_window.between(temp_y-range*1, temp_yb+range*1))
             continue
-
+        console.log("Template " + template + " is in range!");
+        // console.log(x_window, y_window);
         needed_templates.push(template);
     }
     if (needed_templates.length == 0) {
         if (zooming_in == false && zooming_out == false) {
-            document.getElementById("minimap-box").style.display = "none";
-            document.getElementById("minimap-text").style.display = "block";
-            document.getElementById("minimap-text").innerHTML = "Temp yok.";
+            document.getElementById("minimap-box").style.display = "block";
+            document.getElementById("minimap-text").style.display = "none";
+            document.getElementById("minimap-text").innerHTML = "Não tem nada aqui.";
         }
     } else {
         document.getElementById("minimap-box").style.display = "block";
@@ -317,7 +324,7 @@ function drawTemplates() {
         var newheight = zoomlevel * image_list[template].height;
         var img = image_list[template];
         ctx_minimap.drawImage(img, xoff, yoff, newwidth, newheight);
-
+        console.log("Drawn!");
     }
 }
 
@@ -331,7 +338,7 @@ function drawBoard() {
     var xoff_m = (minimap.width / 2) % zoomlevel - zoomlevel;
     var yoff_m = (minimap.height / 2) % zoomlevel - zoomlevel;
     var z = 1 * zoomlevel;
-
+    ctx_minimap_board.lineWidth = 0.3;
     for (var x = 0; x <= bw; x += z) {
         ctx_minimap_board.moveTo(x + xoff_m, yoff_m);
         ctx_minimap_board.lineTo(x + xoff_m, bh + yoff_m);
@@ -341,7 +348,7 @@ function drawBoard() {
         ctx_minimap_board.moveTo(xoff_m, x + yoff_m);
         ctx_minimap_board.lineTo(bw + xoff_m, x + yoff_m);
     }
-    ctx_minimap_board.strokeStyle = "black";
+    ctx_minimap_board.strokeStyle = "lightgrey";
     ctx_minimap_board.stroke();
 }
 
@@ -357,7 +364,7 @@ function drawCursor() {
     yoff_c = y - y_top;
 
     ctx_minimap_cursor.beginPath();
-    ctx_minimap_cursor.lineWidth = zoomlevel / 3;
+    ctx_minimap_cursor.lineWidth = zoomlevel / 4;
     ctx_minimap_cursor.strokeStyle = "red";
     ctx_minimap_cursor.rect(zoomlevel * xoff_c, zoomlevel * yoff_c, zoomlevel, zoomlevel);
     ctx_minimap_cursor.stroke();
@@ -387,5 +394,6 @@ function findCoor() {
             console.log(coorDOM.innerHTML);
         }
     });*/
-    coorDOM = document.getElementsByClassName("coorbox")[0];
+    coorDOM = document.getElementById("coords");
 }
+
