@@ -1,9 +1,9 @@
 {
-  "insa": {
-    "name": "insa.png",
-    "x": -9863,
-    "y": 4541,
-    "width": 947,
-    "height": 224
+  "main": {
+    "name": "main.png",
+    "x": 336,
+    "y": 3188,
+    "width": 199,
+    "height": 123
    }
 }
