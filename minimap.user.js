@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         Minimapa para PixelPlanet
+// @name         Minimapa parana
 // @namespace    http://tampermonkey.net/
 // @version      31
-// @description  PixelPlanet Minimap for Brazil :)
+// @description  Minimapa parana
 // @author       in$ANO#2019
-// @match        https://pixelplanet.fun/*
+// @match        https://pixelzone.io/*
 // @updateURL    https://raw.githubusercontent.com/insanocs/pixelplanetmap-brazil/master/minimap.user.js
 // @downloadURL  https://raw.githubusercontent.com/insanocs/pixelplanetmap-brazil/master/minimap.user.js
 // @grant        none
